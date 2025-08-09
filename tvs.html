@@ -1,1 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Catálogo TVS | Jack Mototienda Nicaragua</title>
+<style>
+  /* Reset y base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #003b3b);
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: #006666;
+    padding: 1.8rem 2rem;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0,102,102,0.7);
+    user-select: none;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e0ffff;
+    text-shadow: 2px 2px 6px #004d4d;
+    margin-bottom: 0.15em;
+    font-family: 'Anton', sans-serif;
+  }
+  header p {
+    font-weight: 600;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #a0e0e0;
+    letter-spacing: 0.06em;
+    text-shadow: 1px 1px 5px #003333;
+  }
+
+  nav {
+    background: #004d4d;
+    box-shadow: 0 4px 20px rgba(0,102,102,0.85);
+    user-select: none;
+  }
+  nav ul {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 5vw, 3rem);
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+  nav ul li a {
+    font-weight: 700;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #80e0e0;
+    padding: 0.25rem 0.5rem;
+    position: relative;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0;
+    height: 3px;
+    background: #00ffff;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+  nav ul li a:hover,
+  nav ul li a:focus {
+    color: #ccffff;
+  }
+  nav ul li a:hover::after,
+  nav ul li a:focus::after {
+    width: 100%;
+  }
+
+  main.container {
+    max-width: 1140px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+    flex-grow: 1;
+  }
+  h2.section-title {
+    text-align: center;
+    color: #00cccc;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 10px #004d4d;
+    user-select: none;
+  }
+
+  .motos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.8rem);
+  }
+
+  .moto-card {
+    background: #004040;
+    border-radius: 18px;
+    box-shadow: 0 0 18px #008080cc;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s ease;
+  }
+  .moto-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 14px 30px #00ffffcc;
+  }
+
+  .moto-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #002020;
+    padding: 1rem;
+    user-select: none;
+  }
+
+  .moto-content {
+    padding: 1.6rem 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .moto-content h3 {
+    margin: 0;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 800;
+    color: #b3ffff;
+    letter-spacing: 0.04em;
+    user-select: text;
+  }
+
+  .btn-more-info {
+    background: #009999;
+    border: none;
+    border-radius: 12px;
+    color: #e0ffff;
+    font-weight: 700;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .btn-more-info:hover,
+  .btn-more-info:focus {
+    background: #00cccc;
+    outline: none;
+  }
+
+  /* Modal */
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 9999;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: #004d4d;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px #00ffffcc;
+    position: relative;
+    padding: 1.5rem 2rem 2rem;
+    color: #ccffff;
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #00cccc;
+    font-weight: 900;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+  .modal-close-btn:hover,
+  .modal-close-btn:focus {
+    color: #00ffff;
+    outline: none;
+  }
+
+  .modal-image {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    border-radius: 15px;
+    margin-bottom: 1.2rem;
+    user-select: none;
+  }
+
+  .modal-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 900;
+    margin-bottom: 0.6rem;
+    color: #b3ffff;
+  }
+
+  .modal-description {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: 1rem;
+    color: #d0ffffcc;
+  }
+
+  .status {
+    font-weight: 900;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background-color: #008080;
+    color: #d0ffff;
+    box-shadow: 0 0 12px #00ffffcc;
+  }
+
+  .modal-price {
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    margin-bottom: 1.8rem;
+    color: #a0f0f0;
+  }
+
+  .modal-price small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: #70cccc;
+    margin-top: 4px;
+  }
+
+  .btn-whatsapp {
+    background: linear-gradient(45deg, #25d366, #1ebe5d);
+    color: white;
+    font-weight: 800;
+    text-align: center;
+    padding: 14px 0;
+    border-radius: 12px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    box-shadow:
+      0 4px 15px #23c15fcc,
+      inset 0 -4px 6px #20b557cc;
+    user-select: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .btn-whatsapp:hover,
+  .btn-whatsapp:focus {
+    background: linear-gradient(45deg, #1ebe5d, #13963c);
+    box-shadow:
+      0 6px 20px #13963ccc,
+      inset 0 -6px 8px #0e6e2dcc;
+    outline: none;
+    text-decoration: none;
+  }
+
+  /* Scrollbar modal */
+  .modal-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: #009999;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .modal-content {
+      padding: 1rem 1.2rem 1.5rem;
+    }
+    .modal-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+
+<!-- Fuentes Google -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+
+<header>
+  <h1>Jack Mototienda Nicaragua</h1>
+  <p>Distribuidor autorizado TVS</p>
+</header>
+
+<nav role="navigation" aria-label="Menú principal">
+  <ul>
+    <li><a href="index.html" tabindex="0">Inicio</a></li>
+    <li><a href="motos-tvs.html" tabindex="0">Motos TVS</a></li>
+    <li><a href="contacto.html" tabindex="0">Contacto</a></li>
+  </ul>
+</nav>
+
+<main class="container" role="main">
+  <h2 class="section-title">Catálogo TVS</h2>
+
+  <div class="motos-grid" role="list">
+
+    <!-- Aquí van las motos -->
+    <!-- Se usa data-moto con clave única para cada versión 2025 y 2026 -->
+
+    <article class="moto-card" role="listitem">
+      <img src="hlx150cc_2025.jpg" alt="HLX150CC 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>HLX150CC 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-hlx150cc_2025" data-moto="hlx150cc_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="hlx150x_2025.jpg" alt="HLX 150X 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>HLX 150X 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-hlx150x_2025" data-moto="hlx150x_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="hlx150cc_2026.jpg" alt="HLX150CC 2026" loading="lazy" />
+      <div class="moto-content">
+        <h3>HLX150CC 2026</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-hlx150cc_2026" data-moto="hlx150cc_2026">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="hlx150x_2026.jpg" alt="HLX 150X 2026" loading="lazy" />
+      <div class="moto-content">
+        <h3>HLX 150X 2026</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-hlx150x_2026" data-moto="hlx150x_2026">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="stryker125cc_2025.jpg" alt="STRYKER 125CC 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>STRYKER 125CC 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-stryker125cc_2025" data-moto="stryker125cc_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="stryker125cc_2026.jpg" alt="STRYKER 125CC 2026" loading="lazy" />
+      <div class="moto-content">
+        <h3>STRYKER 125CC 2026</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-stryker125cc_2026" data-moto="stryker125cc_2026">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="raider125cc_street_2025.jpg" alt="RAIDER 125CC STREET 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>RAIDER 125CC STREET 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-raider125cc_street_2025" data-moto="raider125cc_street_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="apache_rtr_160cc_2v_2025.jpg" alt="APACHE RTR 160CC 2V 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>APACHE RTR 160CC 2V 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-apache_rtr_160cc_2v_2025" data-moto="apache_rtr_160cc_2v_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="apache_rtr_160cc_4v_2025.jpg" alt="APACHE RTR 160CC 4V 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>APACHE RTR 160CC 4V 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-apache_rtr_160cc_4v_2025" data-moto="apache_rtr_160cc_4v_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="apache_rtr_200cc_4v_2025.jpg" alt="APACHE RTR 200CC 4V 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>APACHE RTR 200CC 4V 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-apache_rtr_200cc_4v_2025" data-moto="apache_rtr_200cc_4v_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="apache_rtr_310cc_4v_2026.jpg" alt="APACHE RTR 310CC 4V 2026" loading="lazy" />
+      <div class="moto-content">
+        <h3>APACHE RTR 310CC 4V 2026</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-apache_rtr_310cc_4v_2026" data-moto="apache_rtr_310cc_4v_2026">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="neo_nx_cw_disc_110cc_2025.jpg" alt="NEO NX CW DISC 110CC 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>NEO NX CW DISC 110CC 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-neo_nx_cw_disc_110cc_2025" data-moto="neo_nx_cw_disc_110cc_2025">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="dazz_cw_110cc_2025.jpg" alt="DAZZ CW 110CC 2025" loading="lazy" />
+      <div class="moto-content">
+        <h3>DAZZ CW 110CC 2025</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-dazz_cw_110cc_2025" data-moto="dazz_cw_110cc_2025">Más información</button>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- Modal general -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content" role="document" tabindex="0">
+    <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">&times;</button>
+    <img src="" alt="" class="modal-image" id="modalImage" />
+    <h3 class="modal-title" id="modalTitle"></h3>
+    <p class="modal-description" id="modalDescription">Modelo oficial TVS, motor confiable y eficiente para tu día a día.</p>
+    <span class="status" id="modalStatus">Disponible</span>
+    <p class="modal-price" id="modalPrice"></p>
+    <a href="#" class="btn-whatsapp" id="modalWhatsappBtn" target="_blank" rel="noopener noreferrer">Adquirir por WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  const motosData = {
+    hlx150cc_2025: {
+      name: "HLX150CC",
+      year: 2025,
+      price: 51199,
+      img: "hlx150cc_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto HLX150CC modelo 2025"
+    },
+    hlx150x_2025: {
+      name: "HLX 150X",
+      year: 2025,
+      price: 53799,
+      img: "hlx150x_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto HLX 150X modelo 2025"
+    },
+    hlx150cc_2026: {
+      name: "HLX150CC",
+      year: 2026,
+      price: 54799,
+      img: "hlx150cc_2026.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto HLX150CC modelo 2026"
+    },
+    hlx150x_2026: {
+      name: "HLX 150X",
+      year: 2026,
+      price: 54799,
+      img: "hlx150x_2026.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto HLX 150X modelo 2026"
+    },
+    stryker125cc_2025: {
+      name: "STRYKER 125CC",
+      year: 2025,
+      price: 51199,
+      img: "stryker125cc_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto STRYKER 125CC modelo 2025"
+    },
+    stryker125cc_2026: {
+      name: "STRYKER 125CC",
+      year: 2026,
+      price: 54799,
+      img: "stryker125cc_2026.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto STRYKER 125CC modelo 2026"
+    },
+    raider125cc_street_2025: {
+      name: "RAIDER 125CC STREET",
+      year: 2025,
+      price: 67699,
+      img: "raider125cc_street_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto RAIDER 125CC STREET modelo 2025"
+    },
+    apache_rtr_160cc_2v_2025: {
+      name: "APACHE RTR 160CC 2V",
+      year: 2025,
+      price: 67699,
+      img: "apache_rtr_160cc_2v_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto APACHE RTR 160CC 2V modelo 2025"
+    },
+    apache_rtr_160cc_4v_2025: {
+      name: "APACHE RTR 160CC 4V",
+      year: 2025,
+      price: 76899,
+      img: "apache_rtr_160cc_4v_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto APACHE RTR 160CC 4V modelo 2025"
+    },
+    apache_rtr_200cc_4v_2025: {
+      name: "APACHE RTR 200CC 4V",
+      year: 2025,
+      price: 95199,
+      img: "apache_rtr_200cc_4v_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto APACHE RTR 200CC 4V modelo 2025"
+    },
+    apache_rtr_310cc_4v_2026: {
+      name: "APACHE RTR 310CC 4V",
+      year: 2026,
+      price: 230800,
+      img: "apache_rtr_310cc_4v_2026.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto APACHE RTR 310CC 4V modelo 2026"
+    },
+    neo_nx_cw_disc_110cc_2025: {
+      name: "NEO NX CW DISC 110CC",
+      year: 2025,
+      price: 51199,
+      img: "neo_nx_cw_disc_110cc_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto NEO NX CW DISC 110CC modelo 2025"
+    },
+    dazz_cw_110cc_2025: {
+      name: "DAZZ CW 110CC",
+      year: 2025,
+      price: 49799,
+      img: "dazz_cw_110cc_2025.jpg",
+      whatsappMsg: "Hola, quiero adquirir la moto DAZZ CW 110CC modelo 2025"
+    },
+  };
+
+  const modalOverlay = document.getElementById("modalOverlay");
+  const modalCloseBtn = document.getElementById("modalCloseBtn");
+  const modalImage = document.getElementById("modalImage");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDescription = document.getElementById("modalDescription");
+  const modalStatus = document.getElementById("modalStatus");
+  const modalPrice = document.getElementById("modalPrice");
+  const modalWhatsappBtn = document.getElementById("modalWhatsappBtn");
+
+  function formatCurrency(n) {
+    return "C$ " + n.toLocaleString("es-NI");
+  }
+
+  function openModal(motoKey) {
+    const moto = motosData[motoKey];
+    if (!moto) return;
+
+    modalImage.src = moto.img;
+    modalImage.alt = `${moto.name} ${moto.year}`;
+    modalTitle.textContent = `${moto.name} ${moto.year}`;
+    // Descripción fija, puedes cambiarla si quieres
+    modalDescription.textContent = "Modelo oficial TVS, motor confiable y eficiente para tu día a día.";
+    modalStatus.textContent = "Disponible";
+    modalStatus.className = "status disponible";
+
+    // Mostrar precio y si hay otro modelo año diferente, mostrar ambos precios
+    // Buscamos si hay el mismo modelo en el otro año para mostrar doble precio
+    const modelBase = motoKey.replace(/_(2025|2026)$/, "");
+    const altYear = moto.year === 2025 ? 2026 : 2025;
+    const altKey = `${modelBase}_${altYear}`;
+
+    if (motosData[altKey]) {
+      // Mostrar doble precio
+      const price1 = formatCurrency(moto.price) + " (" + moto.year + ")";
+      const price2 = formatCurrency(motosData[altKey].price) + " (" + altYear + ")";
+      modalPrice.innerHTML = `<strong>Precio:</strong> ${price1} <br> <strong>Precio:</strong> ${price2}`;
+    } else {
+      modalPrice.innerHTML = `<strong>Precio:</strong> ${formatCurrency(moto.price)} (${moto.year})`;
+    }
+
+    const waMsg = encodeURIComponent(moto.whatsappMsg);
+    modalWhatsappBtn.href = `https://wa.me/50581294177?text=${waMsg}`;
+
+    modalOverlay.classList.add("active");
+    modalOverlay.setAttribute("aria-hidden", "false");
+    modalCloseBtn.focus();
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove("active");
+    modalOverlay.setAttribute("aria-hidden", "true");
+  }
+
+  document.querySelectorAll(".btn-more-info").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const motoKey = e.currentTarget.getAttribute("data-moto");
+      openModal(motoKey);
+    });
+  });
+
+  modalCloseBtn.addEventListener("click", closeModal);
+
+  modalOverlay.addEventListener("click", e => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  window.addEventListener("keydown", e => {
+    if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>
 
