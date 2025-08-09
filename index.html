@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>Jack Mototienda Nicaragua | Motos Vento & TVS</title>
 <style>
     /* RESET y BASE */
@@ -39,7 +39,7 @@
     }
     header h1 {
         font-weight: 900;
-        font-size: 2.8rem;
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: #fff9f9;
@@ -49,7 +49,7 @@
     }
     header p {
         font-weight: 600;
-        font-size: 1.25rem;
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
         color: #ffd9d9;
         letter-spacing: 0.06em;
         text-shadow: 1px 1px 5px #4b0000;
@@ -63,20 +63,22 @@
     nav ul {
         display: flex;
         justify-content: center;
-        gap: 3rem;
+        gap: clamp(1rem, 5vw, 3rem);
         list-style: none;
         padding: 1rem 0;
         margin: 0;
+        flex-wrap: wrap;
     }
     nav ul li a {
         font-weight: 700;
-        font-size: 1.3rem;
+        font-size: clamp(1rem, 2vw, 1.3rem);
         color: #ffb3b3;
         padding: 0.25rem 0.5rem;
         position: relative;
         transition: color 0.3s ease;
         text-transform: uppercase;
         letter-spacing: 0.1em;
+        white-space: nowrap;
     }
     nav ul li a::after {
         content: '';
@@ -100,14 +102,14 @@
     /* Hero */
     .hero {
         position: relative;
-        height: 420px;
+        height: clamp(220px, 40vw, 420px);
         background: url('https://images.unsplash.com/photo-1615397349445-90f7516fbae2?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         color: #fff;
-        font-size: 3.2rem;
+        font-size: clamp(1.8rem, 6vw, 3.2rem);
         font-weight: 900;
         letter-spacing: 0.15em;
         text-shadow:
@@ -115,13 +117,6 @@
             0 0 8px #ff0000aa;
         padding: 0 1rem;
         user-select: none;
-    }
-    @media (max-width: 600px) {
-        .hero {
-            font-size: 2rem;
-            height: 280px;
-            letter-spacing: 0.08em;
-        }
     }
 
     /* Main container */
@@ -134,7 +129,7 @@
     h2.section-title {
         text-align: center;
         color: #ff4b4b;
-        font-size: 2.8rem;
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
         margin-bottom: 2rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -146,8 +141,8 @@
     /* Grid motos */
     .motos-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2.8rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: clamp(1.5rem, 3vw, 2.8rem);
     }
 
     .moto-card {
@@ -171,7 +166,7 @@
 
     .moto-card img {
         width: 100%;
-        height: 240px;
+        height: clamp(180px, 25vw, 240px);
         object-fit: contain;
         background-color: #1a0000;
         padding: 1rem;
@@ -192,7 +187,7 @@
     }
     .moto-content h3 {
         margin-bottom: 1rem;
-        font-size: 1.8rem;
+        font-size: clamp(1.3rem, 3vw, 1.8rem);
         font-weight: 800;
         color: #ffcccc;
         letter-spacing: 0.04em;
@@ -200,7 +195,7 @@
     }
     .moto-content p {
         color: #d9d9d9cc;
-        font-size: 1rem;
+        font-size: clamp(0.9rem, 2vw, 1rem);
         margin-bottom: 2rem;
         user-select: text;
         line-height: 1.5;
@@ -213,7 +208,7 @@
         text-align: center;
         padding: 14px 0;
         border-radius: 12px;
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 2vw, 1.2rem);
         box-shadow:
             0 4px 15px #23c15fcc,
             inset 0 -4px 6px #20b557cc;
@@ -238,21 +233,11 @@
         color: #ffa3a3;
         text-align: center;
         padding: 24px 1rem;
-        font-size: 0.95rem;
+        font-size: clamp(0.8rem, 2vw, 0.95rem);
         font-weight: 600;
         letter-spacing: 0.05em;
         user-select: none;
         box-shadow: inset 0 2px 15px #6a00001a;
-    }
-
-    /* Responsive */
-    @media (max-width: 450px) {
-        .moto-card img {
-            height: 180px;
-        }
-        .hero {
-            font-size: 1.5rem;
-        }
     }
 </style>
 
