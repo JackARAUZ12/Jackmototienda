@@ -1,198 +1,264 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jack Mototienda Nicaragua</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jack Mototienda Nicaragua | Motos Vento & TVS</title>
+<style>
+    /* RESET y BASE */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+            Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a, #3b0000);
+        color: #eee;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
-        body {
-            background-color: #f8f8f8;
-            color: #333;
-            line-height: 1.6;
-        }
+    a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+    a:focus, button:focus {
+        outline: 2px solid #ff3c3c;
+        outline-offset: 2px;
+    }
 
-        header {
-            background-color: #d10000;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+    header {
+        background: #b30000;
+        padding: 1.8rem 2rem;
+        text-align: center;
+        box-shadow: 0 6px 12px rgba(179, 0, 0, 0.7);
+        user-select: none;
+    }
+    header h1 {
+        font-weight: 900;
+        font-size: 2.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #fff9f9;
+        text-shadow: 2px 2px 6px #660000;
+        margin-bottom: 0.15em;
+        font-family: 'Anton', sans-serif;
+    }
+    header p {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: #ffd9d9;
+        letter-spacing: 0.06em;
+        text-shadow: 1px 1px 5px #4b0000;
+    }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
+    nav {
+        background: #290000;
+        box-shadow: 0 4px 20px rgba(179,0,0,0.85);
+        user-select: none;
+    }
+    nav ul {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        list-style: none;
+        padding: 1rem 0;
+        margin: 0;
+    }
+    nav ul li a {
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: #ffb3b3;
+        padding: 0.25rem 0.5rem;
+        position: relative;
+        transition: color 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+    nav ul li a::after {
+        content: '';
+        position: absolute;
+        left: 0; bottom: -6px;
+        width: 0;
+        height: 3px;
+        background: #ff3c3c;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+        color: #fff;
+    }
+    nav ul li a:hover::after,
+    nav ul li a:focus::after {
+        width: 100%;
+    }
 
-        nav {
-            background: #111;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin: 0 20px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 15px 0;
-            display: block;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a:hover,
-        nav ul li a:focus {
-            color: #ff4444;
-        }
-
+    /* Hero */
+    .hero {
+        position: relative;
+        height: 420px;
+        background: url('https://images.unsplash.com/photo-1615397349445-90f7516fbae2?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #fff;
+        font-size: 3.2rem;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+        text-shadow:
+            3px 3px 12px rgba(0, 0, 0, 0.85),
+            0 0 8px #ff0000aa;
+        padding: 0 1rem;
+        user-select: none;
+    }
+    @media (max-width: 600px) {
         .hero {
-            background: url('https://images.unsplash.com/photo-1615397349445-90f7516fbae2?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 3px 3px 12px rgba(0,0,0,0.8);
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        main.container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        h2.section-title {
-            text-align: center;
-            color: #d10000;
             font-size: 2rem;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
+            height: 280px;
+            letter-spacing: 0.08em;
         }
+    }
 
-        .motos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+    /* Main container */
+    main.container {
+        max-width: 1140px;
+        margin: 3rem auto 5rem;
+        padding: 0 1rem;
+        flex-grow: 1;
+    }
+    h2.section-title {
+        text-align: center;
+        color: #ff4b4b;
+        font-size: 2.8rem;
+        margin-bottom: 2rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-shadow: 1px 1px 10px #660000;
+        user-select: none;
+    }
 
-        .moto-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    /* Grid motos */
+    .motos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.8rem;
+    }
 
-        .moto-card:hover,
-        .moto-card:focus-within {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
+    .moto-card {
+        background: #2e0000;
+        border-radius: 18px;
+        box-shadow: 0 0 18px #7a0000cc;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+            transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.35s ease;
+        cursor: pointer;
+    }
+    .moto-card:focus-within,
+    .moto-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 14px 30px #ff1a1acc;
+        outline: none;
+    }
 
+    .moto-card img {
+        width: 100%;
+        height: 240px;
+        object-fit: contain;
+        background-color: #1a0000;
+        padding: 1rem;
+        user-select: none;
+        transition: transform 0.5s ease;
+    }
+    .moto-card:hover img,
+    .moto-card:focus-within img {
+        transform: scale(1.05);
+    }
+
+    .moto-content {
+        padding: 1.6rem 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .moto-content h3 {
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #ffcccc;
+        letter-spacing: 0.04em;
+        user-select: text;
+    }
+    .moto-content p {
+        color: #d9d9d9cc;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        user-select: text;
+        line-height: 1.5;
+    }
+
+    .btn-whatsapp {
+        background: linear-gradient(45deg, #25d366, #1ebe5d);
+        color: white;
+        font-weight: 800;
+        text-align: center;
+        padding: 14px 0;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        box-shadow:
+            0 4px 15px #23c15fcc,
+            inset 0 -4px 6px #20b557cc;
+        user-select: none;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    .btn-whatsapp:hover,
+    .btn-whatsapp:focus {
+        background: linear-gradient(45deg, #1ebe5d, #13963c);
+        box-shadow:
+            0 6px 20px #13963ccc,
+            inset 0 -6px 8px #0e6e2dcc;
+        outline: none;
+        text-decoration: none;
+    }
+
+    footer {
+        background: #1c0000;
+        color: #ffa3a3;
+        text-align: center;
+        padding: 24px 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        user-select: none;
+        box-shadow: inset 0 2px 15px #6a00001a;
+    }
+
+    /* Responsive */
+    @media (max-width: 450px) {
         .moto-card img {
-            width: 100%;
-            height: 200px;
-            background: #f0f0f0;
-            object-fit: contain;
-            padding: 10px;
+            height: 180px;
         }
-
-        .moto-content {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .moto-content h3 {
-            margin-bottom: 12px;
+        .hero {
             font-size: 1.5rem;
-            color: #222;
         }
+    }
+</style>
 
-        .moto-content p {
-            flex-grow: 1;
-            color: #555;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
+<!-- Fuentes Google -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
 
-        .btn-whatsapp {
-            background-color: #25d366;
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            text-align: center;
-            padding: 12px 0;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-            font-size: 1.1rem;
-            user-select: none;
-        }
-
-        .btn-whatsapp:hover,
-        .btn-whatsapp:focus {
-            background-color: #1ebe5d;
-        }
-
-        footer {
-            background: #111;
-            color: white;
-            text-align: center;
-            padding: 20px 10px;
-            margin-top: 60px;
-            font-size: 0.9rem;
-            letter-spacing: 0.03em;
-        }
-
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px 0;
-            }
-
-            nav ul li {
-                margin: 0;
-            }
-
-            .hero {
-                font-size: 1.5rem;
-                height: 280px;
-                padding: 0 15px;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -201,46 +267,52 @@
     <p>Distribuidor autorizado Vento y TVS</p>
 </header>
 
-<nav>
+<nav role="navigation" aria-label="Menú principal">
     <ul>
-        <li><a href="index.html" aria-current="page">Inicio</a></li>
-        <li><a href="motos.html">Motos</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="index.html" aria-current="page" tabindex="0">Inicio</a></li>
+        <li><a href="motos.html" tabindex="0">Motos</a></li>
+        <li><a href="contacto.html" tabindex="0">Contacto</a></li>
     </ul>
 </nav>
 
 <section class="hero" role="img" aria-label="Motos Vento y TVS">
-    🚀 Estrena tu moto hoy mismo — Vento y TVS al mejor precio
+    Estrena tu moto hoy mismo — Vento y TVS al mejor precio
 </section>
 
 <main class="container" role="main">
     <h2 class="section-title">Motos Recomendadas</h2>
 
     <div class="motos-grid">
-        <article class="moto-card" tabindex="0">
+        <article class="moto-card" tabindex="0" aria-label="Moto TVS Apache RTR 200 4V">
             <img src="apache200.jpg" alt="Moto TVS Apache RTR 200 4V" loading="lazy" />
             <div class="moto-content">
                 <h3>TVS Apache RTR 200 4V</h3>
                 <p>Potencia, estilo y tecnología en una sola moto.</p>
-                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20TVS%20Apache%20RTR%20200%204V" class="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Cotizar TVS Apache RTR 200 4V por WhatsApp">Cotizar por WhatsApp</a>
+                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20TVS%20Apache%20RTR%20200%204V" 
+                   class="btn-whatsapp" target="_blank" rel="noopener noreferrer" 
+                   aria-label="Cotizar TVS Apache RTR 200 4V por WhatsApp">Cotizar por WhatsApp</a>
             </div>
         </article>
 
-        <article class="moto-card" tabindex="0">
+        <article class="moto-card" tabindex="0" aria-label="Moto TVS Raider 125cc">
             <img src="raider125.jpg" alt="Moto TVS Raider 125cc" loading="lazy" />
             <div class="moto-content">
                 <h3>TVS Raider 125cc</h3>
                 <p>Perfecta para ciudad, rápida y económica.</p>
-                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20TVS%20Raider%20125cc" class="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Cotizar TVS Raider 125cc por WhatsApp">Cotizar por WhatsApp</a>
+                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20TVS%20Raider%20125cc" 
+                   class="btn-whatsapp" target="_blank" rel="noopener noreferrer"
+                   aria-label="Cotizar TVS Raider 125cc por WhatsApp">Cotizar por WhatsApp</a>
             </div>
         </article>
 
-        <article class="moto-card" tabindex="0">
+        <article class="moto-card" tabindex="0" aria-label="Moto Vento Crossmax 250 Pro">
             <img src="crossmax250.jpg" alt="Moto Vento Crossmax 250 Pro" loading="lazy" />
             <div class="moto-content">
                 <h3>Vento Crossmax 250 Pro</h3>
                 <p>Domina cualquier terreno con potencia y resistencia.</p>
-                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20Vento%20Crossmax%20250%20Pro" class="btn-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Cotizar Vento Crossmax 250 Pro por WhatsApp">Cotizar por WhatsApp</a>
+                <a href="https://wa.me/50581294177?text=Hola%2C%20quiero%20cotizar%20la%20Vento%20Crossmax%20250%20Pro" 
+                   class="btn-whatsapp" target="_blank" rel="noopener noreferrer"
+                   aria-label="Cotizar Vento Crossmax 250 Pro por WhatsApp">Cotizar por WhatsApp</a>
             </div>
         </article>
     </div>
