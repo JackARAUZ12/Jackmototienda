@@ -1,1 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Catálogo VENTO | Jack Mototienda Nicaragua</title>
+<style>
+  /* Reset y base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #3b0000);
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: #b30000;
+    padding: 1.8rem 2rem;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(179, 0, 0, 0.7);
+    user-select: none;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff9f9;
+    text-shadow: 2px 2px 6px #660000;
+    margin-bottom: 0.15em;
+    font-family: 'Anton', sans-serif;
+  }
+  header p {
+    font-weight: 600;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #ffd9d9;
+    letter-spacing: 0.06em;
+    text-shadow: 1px 1px 5px #4b0000;
+  }
+
+  nav {
+    background: #290000;
+    box-shadow: 0 4px 20px rgba(179,0,0,0.85);
+    user-select: none;
+  }
+  nav ul {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 5vw, 3rem);
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+  nav ul li a {
+    font-weight: 700;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: #ffb3b3;
+    padding: 0.25rem 0.5rem;
+    position: relative;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0;
+    height: 3px;
+    background: #ff3c3c;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+  nav ul li a:hover,
+  nav ul li a:focus {
+    color: #fff;
+  }
+  nav ul li a:hover::after,
+  nav ul li a:focus::after {
+    width: 100%;
+  }
+
+  main.container {
+    max-width: 1140px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+    flex-grow: 1;
+  }
+  h2.section-title {
+    text-align: center;
+    color: #ff4b4b;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 10px #660000;
+    user-select: none;
+  }
+
+  .motos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.8rem);
+  }
+
+  .moto-card {
+    background: #2e0000;
+    border-radius: 18px;
+    box-shadow: 0 0 18px #7a0000cc;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s ease;
+  }
+  .moto-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 14px 30px #ff1a1acc;
+  }
+
+  .moto-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #1a0000;
+    padding: 1rem;
+    user-select: none;
+  }
+
+  .moto-content {
+    padding: 1.6rem 1.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .moto-content h3 {
+    margin: 0;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 800;
+    color: #ffcccc;
+    letter-spacing: 0.04em;
+    user-select: text;
+  }
+
+  .btn-more-info {
+    background: #b30000;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 700;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .btn-more-info:hover,
+  .btn-more-info:focus {
+    background: #ff3c3c;
+    outline: none;
+  }
+
+  /* Modal */
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 9999;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: #3a0000;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px #ff0000cc;
+    position: relative;
+    padding: 1.5rem 2rem 2rem;
+    color: #ffe6e6;
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #ff4b4b;
+    font-weight: 900;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+  .modal-close-btn:hover,
+  .modal-close-btn:focus {
+    color: #ff0000;
+    outline: none;
+  }
+
+  .modal-image {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    border-radius: 15px;
+    margin-bottom: 1.2rem;
+    user-select: none;
+  }
+
+  .modal-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 900;
+    margin-bottom: 0.6rem;
+    color: #ff9999;
+  }
+
+  .modal-description {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: 1rem;
+    color: #ffdcdccc;
+  }
+
+  .status {
+    font-weight: 900;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .status.disponible {
+    background-color: #2c8a00;
+    color: #d0ffd6;
+    box-shadow: 0 0 12px #3ecb1bcc;
+  }
+  .status.agotado {
+    background-color: #990000;
+    color: #ffb3b3;
+    box-shadow: 0 0 12px #ff0000cc;
+  }
+
+  .modal-price {
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    margin-bottom: 1.8rem;
+    color: #ffbbbb;
+  }
+
+  .btn-whatsapp {
+    background: linear-gradient(45deg, #25d366, #1ebe5d);
+    color: white;
+    font-weight: 800;
+    text-align: center;
+    padding: 14px 0;
+    border-radius: 12px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    box-shadow:
+      0 4px 15px #23c15fcc,
+      inset 0 -4px 6px #20b557cc;
+    user-select: none;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .btn-whatsapp:hover,
+  .btn-whatsapp:focus {
+    background: linear-gradient(45deg, #1ebe5d, #13963c);
+    box-shadow:
+      0 6px 20px #13963ccc,
+      inset 0 -6px 8px #0e6e2dcc;
+    outline: none;
+    text-decoration: none;
+  }
+
+  /* Scrollbar modal */
+  .modal-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: #bb2e2e;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .modal-content {
+      padding: 1rem 1.2rem 1.5rem;
+    }
+    .modal-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+
+<!-- Fuentes Google -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+
+<header>
+  <h1>Jack Mototienda Nicaragua</h1>
+  <p>Distribuidor autorizado Vento</p>
+</header>
+
+<nav role="navigation" aria-label="Menú principal">
+  <ul>
+    <li><a href="index.html" tabindex="0">Inicio</a></li>
+    <li><a href="motos.html" tabindex="0">Motos</a></li>
+    <li><a href="contacto.html" tabindex="0">Contacto</a></li>
+  </ul>
+</nav>
+
+<main class="container" role="main">
+  <h2 class="section-title">Catálogo VENTO</h2>
+
+  <div class="motos-grid" role="list">
+
+    <!-- Ejemplo moto -->
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/ryder150.jpg" alt="Ryder 150cc 3.0" loading="lazy" />
+      <div class="moto-content">
+        <h3>Ryder 150cc 3.0</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-ryder150" data-moto="ryder150">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/cruiser200.jpg" alt="Cruiser 200" loading="lazy" />
+      <div class="moto-content">
+        <h3>Cruiser 200</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-cruiser200" data-moto="cruiser200">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/cyclone150.jpg" alt="Cyclone 150" loading="lazy" />
+      <div class="moto-content">
+        <h3>Cyclone 150</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-cyclone150" data-moto="cyclone150">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/falkon200.jpg" alt="Falkon 200" loading="lazy" />
+      <div class="moto-content">
+        <h3>Falkon 200</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-falkon200" data-moto="falkon200">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/falkon220.jpg" alt="Falkon 220" loading="lazy" />
+      <div class="moto-content">
+        <h3>Falkon 220</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-falkon220" data-moto="falkon220">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/crossmax150.jpg" alt="Crossmax 150" loading="lazy" />
+      <div class="moto-content">
+        <h3>Crossmax 150</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-crossmax150" data-moto="crossmax150">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/crossmax200.jpg" alt="Crossmax 200" loading="lazy" />
+      <div class="moto-content">
+        <h3>Crossmax 200</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-crossmax200" data-moto="crossmax200">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/crossmax250pro.jpg" alt="Crossmax 250 PRO" loading="lazy" />
+      <div class="moto-content">
+        <h3>Crossmax 250 PRO</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-crossmax250pro" data-moto="crossmax250pro">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/spirit150.jpg" alt="Spirit 150" loading="lazy" />
+      <div class="moto-content">
+        <h3>Spirit 150</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-spirit150" data-moto="spirit150">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/ovni150.jpg" alt="Ovni 150" loading="lazy" />
+      <div class="moto-content">
+        <h3>Ovni 150</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-ovni150" data-moto="ovni150">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/intrepid125.jpg" alt="Intrepid 125" loading="lazy" />
+      <div class="moto-content">
+        <h3>Intrepid 125</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-intrepid125" data-moto="intrepid125">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/nitrox250.jpg" alt="Nitrox 250" loading="lazy" />
+      <div class="moto-content">
+        <h3>Nitrox 250</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-nitrox250" data-moto="nitrox250">Más información</button>
+      </div>
+    </article>
+
+    <article class="moto-card" role="listitem">
+      <img src="imagenes/reptile200.jpg" alt="Reptile 200" loading="lazy" />
+      <div class="moto-content">
+        <h3>Reptile 200</h3>
+        <button class="btn-more-info" aria-expanded="false" aria-controls="modal-reptile200" data-moto="reptile200">Más información</button>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- Modal general -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content" role="document" tabindex="0">
+    <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">&times;</button>
+    <img src="" alt="" class="modal-image" id="modalImage" />
+    <h3 class="modal-title" id="modalTitle"></h3>
+    <p class="modal-description" id="modalDescription"></p>
+    <span class="status" id="modalStatus"></span>
+    <p class="modal-price" id="modalPrice"></p>
+    <a href="#" class="btn-whatsapp" id="modalWhatsappBtn" target="_blank" rel="noopener noreferrer">Cotizar por WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  // Datos de las motos (edítalo aquí)
+  const motosData = {
+    ryder150: {
+      name: "Ryder 150cc 3.0",
+      img: "imagenes/ryder150.jpg",
+      description: "Moto ágil, eficiente y con diseño moderno para tus recorridos diarios.",
+      status: "Disponible",
+      price: "C$ 45,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Ryder 150cc 3.0"
+    },
+    cruiser200: {
+      name: "Cruiser 200",
+      img: "imagenes/cruiser200.jpg",
+      description: "Potente cruiser para quienes aman comodidad y estilo en la carretera.",
+      status: "Disponible",
+      price: "C$ 53,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Cruiser 200"
+    },
+    cyclone150: {
+      name: "Cyclone 150",
+      img: "imagenes/cyclone150.jpg",
+      description: "Perfecta combinación de velocidad y rendimiento en ciudad y carretera.",
+      status: "Agotado",
+      price: "C$ 47,500",
+      whatsappMsg: "Hola, quiero cotizar la moto Cyclone 150"
+    },
+    falkon200: {
+      name: "Falkon 200",
+      img: "imagenes/falkon200.jpg",
+      description: "Versátil y resistente, ideal para todo tipo de terreno.",
+      status: "Disponible",
+      price: "C$ 52,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Falkon 200"
+    },
+    falkon220: {
+      name: "Falkon 220",
+      img: "imagenes/falkon220.jpg",
+      description: "Mayor potencia y estilo en cada viaje, para los más exigentes.",
+      status: "Disponible",
+      price: "C$ 57,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Falkon 220"
+    },
+    crossmax150: {
+      name: "Crossmax 150",
+      img: "imagenes/crossmax150.jpg",
+      description: "Ideal para aventura urbana y terrenos difíciles.",
+      status: "Disponible",
+      price: "C$ 49,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Crossmax 150"
+    },
+    crossmax200: {
+      name: "Crossmax 200",
+      img: "imagenes/crossmax200.jpg",
+      description: "Potencia y resistencia para rutas más largas y demandantes.",
+      status: "Disponible",
+      price: "C$ 53,500",
+      whatsappMsg: "Hola, quiero cotizar la moto Crossmax 200"
+    },
+    crossmax250pro: {
+      name: "Crossmax 250 PRO",
+      img: "imagenes/crossmax250pro.jpg",
+      description: "La máxima expresión de potencia y tecnología para tu aventura.",
+      status: "Agotado",
+      price: "C$ 61,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Crossmax 250 PRO"
+    },
+    spirit150: {
+      name: "Spirit 150",
+      img: "imagenes/spirit150.jpg",
+      description: "Estilo y eficiencia para tus viajes diarios con comodidad.",
+      status: "Disponible",
+      price: "C$ 46,500",
+      whatsappMsg: "Hola, quiero cotizar la moto Spirit 150"
+    },
+    ovni150: {
+      name: "Ovni 150",
+      img: "imagenes/ovni150.jpg",
+      description: "Diseño futurista con gran rendimiento y confort.",
+      status: "Disponible",
+      price: "C$ 48,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Ovni 150"
+    },
+    intrepid125: {
+      name: "Intrepid 125",
+      img: "imagenes/intrepid125.jpg",
+      description: "Compacta y práctica, perfecta para ciudad y transporte diario.",
+      status: "Disponible",
+      price: "C$ 42,500",
+      whatsappMsg: "Hola, quiero cotizar la moto Intrepid 125"
+    },
+    nitrox250: {
+      name: "Nitrox 250",
+      img: "imagenes/nitrox250.jpg",
+      description: "Potente motor para los amantes de la velocidad y resistencia.",
+      status: "Disponible",
+      price: "C$ 59,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Nitrox 250"
+    },
+    reptile200: {
+      name: "Reptile 200",
+      img: "imagenes/reptile200.jpg",
+      description: "Diseño agresivo y gran desempeño para cualquier terreno.",
+      status: "Disponible",
+      price: "C$ 54,000",
+      whatsappMsg: "Hola, quiero cotizar la moto Reptile 200"
+    }
+  };
+
+  const modalOverlay = document.getElementById("modalOverlay");
+  const modalCloseBtn = document.getElementById("modalCloseBtn");
+  const modalImage = document.getElementById("modalImage");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDescription = document.getElementById("modalDescription");
+  const modalStatus = document.getElementById("modalStatus");
+  const modalPrice = document.getElementById("modalPrice");
+  const modalWhatsappBtn = document.getElementById("modalWhatsappBtn");
+
+  // Abrir modal con datos
+  function openModal(motoKey) {
+    const moto = motosData[motoKey];
+    if (!moto) return;
+
+    modalImage.src = moto.img;
+    modalImage.alt = moto.name;
+    modalTitle.textContent = moto.name;
+    modalDescription.textContent = moto.description;
+
+    // Estado con clase y texto
+    modalStatus.textContent = moto.status;
+    modalStatus.className = "status " + (moto.status.toLowerCase() === "disponible" ? "disponible" : "agotado");
+
+    modalPrice.textContent = moto.price;
+
+    // WhatsApp link con mensaje url encoded
+    const waMsg = encodeURIComponent(moto.whatsappMsg);
+    modalWhatsappBtn.href = `https://wa.me/50581294177?text=${waMsg}`;
+
+    // Mostrar modal
+    modalOverlay.classList.add("active");
+    modalOverlay.setAttribute("aria-hidden", "false");
+    modalCloseBtn.focus();
+  }
+
+  // Cerrar modal
+  function closeModal() {
+    modalOverlay.classList.remove("active");
+    modalOverlay.setAttribute("aria-hidden", "true");
+  }
+
+  // Event listeners botones "Más información"
+  document.querySelectorAll(".btn-more-info").forEach(button => {
+    button.addEventListener("click", () => {
+      const motoKey = button.getAttribute("data-moto");
+      openModal(motoKey);
+    });
+  });
+
+  // Cerrar modal con botón X
+  modalCloseBtn.addEventListener("click", closeModal);
+
+  // Cerrar modal con clic en overlay fuera del modal-content
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  // Cerrar modal con tecla ESC
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>
 
